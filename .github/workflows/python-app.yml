@@ -8,6 +8,8 @@ on:
     branches: [ "master" ]
     paths:
       - '.github/workflows/**'
+  schedule:
+    - cron:  '0 0 * * *' # 每天9点触发
 
 env:
   TZ: Asia/Shanghai
@@ -52,7 +54,5 @@ jobs:
         python main.py
 
 
-# 每天定时触发run-daily作业
-on:
-  schedule:
-    - cron:  '0 0 * * *' # 每天9点触发
+
+
