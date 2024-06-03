@@ -9,7 +9,7 @@ on:
     paths:
       - '.github/workflows/**'
   schedule:
-    - cron:  '0 0 * * *' # 每天9点触发
+    - cron:  '0 0 0 * *' # 每天9点触发
 
 env:
   TZ: Asia/Shanghai
@@ -45,18 +45,6 @@ jobs:
           python main.py
 
 
-
-
-  # 每天定时执行
-  run-daily:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Run Daily Job
-      env:
-        PUSHPLUS_KEY: ${{ secrets.PUSHPLUS_KEY }}
-        PRIVATE_AES_KEY: ${{ secrets.PRIVATE_AES_KEY }}
-      run: |
-        python main.py
 
 
 
