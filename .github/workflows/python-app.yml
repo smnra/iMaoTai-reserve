@@ -39,6 +39,12 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+            
+      - name: Run Daily Job
+        run: |
+          python main.py
+
+
 
 
   # 每天定时执行
