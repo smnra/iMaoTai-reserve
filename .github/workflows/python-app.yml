@@ -46,7 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Run Daily Job
-      uses: actions/checkout@v3
       env:
         PUSHPLUS_KEY: ${{ secrets.PUSHPLUS_KEY }}
         PRIVATE_AES_KEY: ${{ secrets.PRIVATE_AES_KEY }}
