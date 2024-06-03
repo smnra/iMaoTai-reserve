@@ -8,8 +8,6 @@ on:
     branches: [ "master" ]
     paths:
       - '.github/workflows/**'
-  schedule:
-    - cron: '30 1 9 * *'
 
 env:
   TZ: Asia/Shanghai
@@ -18,11 +16,9 @@ permissions:
   contents: read
 
 jobs:
+  # 部署操作
   build:
-
     runs-on: ubuntu-latest
-    #    runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.10
@@ -33,7 +29,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      #          pip install pycryptodome requests beautifulsoup4
 
       - name: Cache pip
         uses: actions/cache@v3
@@ -43,18 +38,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: start run
-        env:
-          PUSHPLUS_KEY: ${{ secrets.PUSHPLUS_KEY }}
-          PRIVATE_AES_KEY: ${{ secrets.PRIVATE_AES_KEY }}
-        run: |
-          python main.py
 
-#        pip install flake8 pytest
-#        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-#    - name: Lint with flake8
-#      run: |
-#        # stop the build if there are Python syntax errors or undefined names
-#        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-#        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-#        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+  # 每天定时执行
+  run-daily:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run Daily Job
+      uses: actions/checkout@v3
+      env:
+        PUSHPLUS_KEY: ${{ secrets.PUSHPLUS_KEY }}
+        PRIVATE_AES_KEY: ${{ secrets.PRIVATE_AES_KEY }}
+      run: |
+        python main.py
+
+
+# 每天定时触发run-daily作业
+on:
+  schedule:
+    - cron:  '0 1 * * *' # 每天9点触发
