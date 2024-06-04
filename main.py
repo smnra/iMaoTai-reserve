@@ -82,4 +82,10 @@ for section in configs.sections():
         logging.error(e)
 
 # 推送消息
-process.send_msg(s_title, s_content)
+try:
+    process.send_msg(s_title, s_content)
+except Exception as e:
+    print(e)
+    logging.error(e)
+
+logging.info("程序执行完毕")
