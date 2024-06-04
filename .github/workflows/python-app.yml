@@ -8,6 +8,8 @@ on:
     branches: [ "master" ]
     paths:
       - '.github/workflows/**'
+  schedule:
+    - cron:  '0 * * * *' # 每天9点触发
 
 env:
   TZ: Asia/Shanghai
@@ -37,22 +39,13 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+            
+      - name: Run Daily Job
+        run: |
+          python main.py
 
 
-  # 每天定时执行
-  run-daily:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Run Daily Job
-      uses: actions/checkout@v3
-      env:
-        PUSHPLUS_KEY: ${{ secrets.PUSHPLUS_KEY }}
-        PRIVATE_AES_KEY: ${{ secrets.PRIVATE_AES_KEY }}
-      run: |
-        python main.py
 
 
-# 每天定时触发run-daily作业
-on:
-  schedule:
-    - cron:  '0 1 * * *' # 每天9点触发
+
+
